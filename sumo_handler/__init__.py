@@ -238,8 +238,8 @@ class SumoHandler(logging.Handler):
         self.write_debug_log("Setting instance SIGTERM=True")
         self.SIGTERM = True
 
-        if self.flush_interval > 0:
-            self.timer.cancel()  # Cancels the scheduled Timer, allows exit immediatley
+        if self.flush_interval_seconds > 0:
+            self.timer.cancel()  # Cancels the scheduled Timer, allows exit immediately
 
         self.write_debug_log("Starting up the final run of the worker thread before shutdown")
         # Send the remaining items that might be sitting in queue.
