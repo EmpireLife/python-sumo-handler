@@ -1,15 +1,13 @@
 from setuptools import setup
 
 setup(
-    name='splunk_handler',
+    name='python-sumo-handler',
     version='2.0.8',
     license='MIT License',
-    description='A Python logging handler that sends your logs to Splunk',
+    description='A Python logging handler that sends your logs to Sumo',
     long_description=open('README.md').read(),
-    author='Zach Taylor',
-    author_email='ztaylor234@gmail.com',
-    url='https://github.com/zach-taylor/splunk_handler',
-    packages=['splunk_handler'],
+    url='https://github.com/EmpireLife/python-sumo-handler',
+    packages=['sumo_handler'],
     install_requires=['requests >= 2.6.0, < 3.0.0'],
     classifiers=[
         'Development Status :: 4 - Beta',
