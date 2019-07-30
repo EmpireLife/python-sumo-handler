@@ -58,6 +58,11 @@ class SumoHandler(logging.Handler):
         instances.append(self)
         logging.Handler.__init__(self)
 
+        self.enabled = str(url).__contains__('sumologic.com/receiver/v1/http')
+        if not self.enabled:
+            print('Sumo Logic log handler disabled, no valid collector URL provided')
+            return
+
         self.url = url
         self.verify_https = verify_https
         self.timeout = timeout
@@ -104,8 +109,10 @@ class SumoHandler(logging.Handler):
         self.write_debug_log("Class initialize complete")
 
     def emit(self, log_record: logging.LogRecord):
-        self.write_debug_log("emit() called")
+        if not self.enabled:
+            return
 
+        self.write_debug_log("emit() called")
         try:
             payload = self.format_record(log_record)
         except Exception as e:
@@ -135,7 +142,7 @@ class SumoHandler(logging.Handler):
 
     def start_worker_thread(self):
         # Start a worker thread responsible for sending logs
-        if self.flush_interval_seconds > 0:
+        if self.enabled and self.flush_interval_seconds > 0:
             self.write_debug_log("Preparing to spin off first worker thread Timer")
             self.timer = Timer(self.flush_interval_seconds, self._sumo_worker)
             self.timer.daemon = True  # Auto-kill thread if main process exits
@@ -153,6 +160,9 @@ class SumoHandler(logging.Handler):
         return self.formatter.format_record(record)
 
     def _sumo_worker(self):
+        if not self.enabled:
+            return
+
         self.write_debug_log("_sumo_worker() called")
 
         if self.flush_interval_seconds > 0:
@@ -225,10 +235,19 @@ class SumoHandler(logging.Handler):
         return "\n".join(json.dumps(item) for item in result)
 
     def force_flush(self):
+        if not self.enabled:
+            return
+
+        if self.timer:
+            self.timer.cancel()
+
         self.write_debug_log("Force flush requested")
         self._sumo_worker()
 
     def shutdown(self):
+        if not self.enabled:
+            return
+
         self.write_debug_log("Immediate shutdown requested")
 
         # Only initiate shutdown once

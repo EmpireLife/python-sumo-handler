@@ -5,7 +5,7 @@ import json
 from sumo_handler import SumoHandler, LogFormatter
 
 # These are intentionally different than the kwarg defaults
-TEST_URL = 'https://test-server.example.com/851A5E58-4EF1-7291-F947-F614A76ACB21'
+TEST_URL = 'https://sumologic.com/receiver/v1/http/851A5E58-4EF1-7291-F947-F614A76ACB21'
 TEST_VERIFY = False
 TEST_TIMEOUT = 27
 TEST_FLUSH_INTERVAL = 5.0
