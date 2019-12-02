@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='python-sumo-handler',
-    version='2.0.8',
+    version='2.0.8.2',
     license='MIT License',
     description='A Python logging handler that sends your logs to Sumo',
     long_description=open('README.md').read(),

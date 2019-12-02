@@ -47,7 +47,7 @@ def force_flush():
 
 class LogFormatter:
     def format_record(self, record: logging.LogRecord):
-        if isinstance(record.msg, Metrics):
+        if isinstance(record.msg, Metrics) or isinstance(record.msg, dict):
             return record.msg
         return {
             'filename': record.filename,
